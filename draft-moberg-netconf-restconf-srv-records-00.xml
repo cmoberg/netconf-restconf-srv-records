@@ -35,8 +35,8 @@
       <t>
         This document specifies Domain Name Service (DNS) SRV Resource
         Records (RRs) <xref target="RFC2782"/> to locate NETCONF
-        <xref target="RFC6241"/> and RESTCONF
-        <xref target="I-D.ietf-netconf-restconf"/> servers and clients.
+        <xref target="RFC6241"/> and RESTCONF <xref target="RFC8040"/>
+        servers and clients.
       </t>
       <t>
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -54,11 +54,11 @@
         respond to the operations or sends notifications to the client.
         The purpose of this document is to provide DNS SRV RRs such that:</t>
         <t>
-          <list style="hanging" hangIndent="8">
-            <t>Clients can discover the location of servers for the purpose
-              of direct management</t>
-            <t>Servers can discover clients for the purpose of device call
-              home as defined in <xref target="I-D.ietf-netconf-call-home"/></t>
+          <list>
+            <t>Clients can discover servers for the purpose of direct
+              management</t>
+            <t>Servers can discover the clients for the purpose of device call
+              home as defined in <xref target="RFC8071"/></t>
           </list>
       </t>
     </section>
@@ -98,21 +98,21 @@
         <c>tcp</c>
         <c>NETCONF Call Home (SSH)</c>
         <c>
-          <xref target="I-D.ietf-netconf-call-home"/>
+          <xref target="RFC8071"/>
         </c>
         <c>netconf-ch-tls</c>
         <c>4335</c>
         <c>tcp</c>
         <c>NETCONF Call Home (TLS)</c>
         <c>
-          <xref target="I-D.ietf-netconf-call-home"/>
+          <xref target="RFC8071"/>
         </c>
         <c>restconf-ch-tls</c>
         <c>4336</c>
         <c>tcp</c>
         <c>RESTCONF Call Home (TLS)</c>
         <c>
-          <xref target="I-D.ietf-netconf-call-home"/>
+          <xref target="RFC8071"/>
         </c>
       </texttable>
     </section>
@@ -127,15 +127,19 @@
       <t>
         <list style="hanging" hangIndent="8">
           <t hangText="_netconf-ssh">
+            <vspace />
           Identifies a NETCONF-over-SSH server
         </t>
           <t hangText="_netconf-ch-ssh">
+            <vspace />
           Identifies a NETCONF-over-SSH client for call-home
         </t>
           <t hangText="_netconf-ssh">
+            <vspace />
           Identifies a NETCONF-over-TLS server
         </t>
           <t hangText="_netconf-ch-ssh">
+            <vspace />
           Identifies a NETCONF-over-TLS client for call-home
         </t>
         </list>
@@ -145,55 +149,57 @@
     </t>
       <figure>
         <artwork>
-        _netconf-ssh._tcp       SRV 0 1 830  netconf-server.example.com.
-        _netconf-ch-ssh._tcp    SRV 0 1 4334 netconf-client.example.com.
-        _netconf-tls._tcp       SRV 0 1 830  netconf-server.example.com.
-        _netconf-ch-tls._tcp    SRV 0 1 4335 netconf-client.example.com.
+  _netconf-ssh._tcp     SRV 0 1 830  netconf-server.example.com.
+  _netconf-ch-ssh._tcp  SRV 0 1 4334 netconf-client.example.com.
+  _netconf-tls._tcp     SRV 0 1 6513 netconf-server.example.com.
+  _netconf-ch-tls._tcp  SRV 0 1 4335 netconf-client.example.com.
         </artwork>
       </figure>
       <t>
-      NETCONF clients and servers needs additional information in order to
-      establish sessions. How this information is derived is not specified
-      in this document, but described in <xref target="I-D.ietf-netconf-call-home"/>.
+      NETCONF clients and servers needs additional information in
+      order to establish sessions. How this information is derived
+      is not specified in this document, but described
+      in <xref target="RFC8071"/>.
     </t>
     </section>
     <section anchor="restconf" title="RESTCONF">
       <t>
-      RESTCONF is an HTTP-based protocol that provides a programmatic interface
-      for accessing data defined in YANG, using the datastores defined in NETCONF.
-    </t>
-      <t>
-      RESTCONF is defined on top of HTTP, but due to the sensitive nature
-      of the information conveyed, RESTCONF requires that the transport-layer
-      protocol provides both data integrity and confidentiality, such as are
+      RESTCONF is an HTTP-based protocol that provides a programmatic
+      interface for accessing data defined in YANG, using the datastores
+      defined in NETCONF. Due to the sensitive nature of the information
+      conveyed, RESTCONF requires that the transport-layer protocol
+      provides both data integrity and confidentiality, such as are
       provided by the TLS protocol <xref target="RFC5246"/>. HTTP sessions
-      can be initiated by the RESTCONF client or by the RESTCONF server in the
-      case of RESTCONF call home. This specification adds two new SRV
+      can be initiated by the RESTCONF client or by the RESTCONF server in
+      the case of RESTCONF call home. This specification adds two new SRV
       service labels for RESTCONF:
-    </t>
+     </t>
       <t>
         <list style="hanging" hangIndent="8">
           <t hangText="_restconf-tls">
+            <vspace />
           Identifies a RESTCONF server
         </t>
           <t hangText="_restconf-ch-tls">
+            <vspace />
           Identifies a RESTCONF client for call-home
         </t>
         </list>
       </t>
       <t>
-      Examples: Service Records
+      Examples: RESTCONF Service Records
     </t>
       <figure>
         <artwork>
-        _restconf-tls._tcp    SRV 0 1 443  restconf-server.example.com.
-        _restconf-ch-tls._tcp SRV 0 1 4336 restconf-client.example.com.
+ _restconf-tls._tcp     SRV 0 1 443  restconf-server.example.com.
+ _restconf-ch-tls._tcp  SRV 0 1 4336 restconf-client.example.com.
       </artwork>
       </figure>
       <t>
-      RESTCONF clients and servers needs additional information in order to
-      establish sessions. How this information is derived is not specified
-      in this document, but described in <xref target="I-D.ietf-netconf-call-home"/>.
+      RESTCONF clients and servers needs additional information in
+      order to establish sessions. How this information is derived is
+      not specified in this document, but described in
+      <xref target="RFC8071"/>.
     </t>
     </section>
     <section anchor="sec" title="Security Considerations">
@@ -215,8 +221,8 @@
     </section>
     <section anchor="acknowledgements" title="Acknowledgements">
       <t>The original idea to, and intial content of this draft was written
-            by Juergen Schoenwaelder, but any issues or shortcomings of the
-            current version is with the current author.</t>
+         by Juergen Schoenwaelder, but any issues or shortcomings of the
+         current version is with the current author.</t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
       <t>
@@ -235,10 +241,8 @@
       <?rfc include='reference.RFC.6335'?>
       <?rfc include='reference.RFC.6763'?>
       <?rfc include='reference.RFC.7589'?>
-    </references>
-    <references title="Informative References">
-      <?rfc include='reference.I-D.ietf-netconf-restconf'?>
-      <?rfc include='reference.I-D.ietf-netconf-call-home'?>
+      <?rfc include='reference.RFC.8040'?>
+      <?rfc include='reference.RFC.8071'?>
     </references>
   </back>
 </rfc>
